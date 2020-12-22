@@ -150,12 +150,39 @@ var ProjectList = (function (_super) {
         listEl.innerHTML = "";
         for (var _i = 0, _a = this.assignedProjects; _i < _a.length; _i++) {
             var prjItem = _a[_i];
-            var listItem = document.createElement("li");
-            listItem.textContent = prjItem.title;
-            listEl.appendChild(listItem);
+            new ProjectItem(this.element.querySelector("ul").id, prjItem);
         }
     };
     return ProjectList;
+}(ProjectMain));
+var ProjectItem = (function (_super) {
+    __extends(ProjectItem, _super);
+    function ProjectItem(hostId, project) {
+        var _this = _super.call(this, "single-project", hostId, false, project.id) || this;
+        _this.project = project;
+        _this.configure();
+        _this.renderContent();
+        return _this;
+    }
+    Object.defineProperty(ProjectItem.prototype, "persons", {
+        get: function () {
+            if (this.project.people === 1) {
+                return "1 person";
+            }
+            else {
+                return this.project.people + " persons";
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    ProjectItem.prototype.configure = function () { };
+    ProjectItem.prototype.renderContent = function () {
+        this.element.querySelector("h2").textContent = this.project.title;
+        this.element.querySelector("h3").textContent = this.persons + " assigned";
+        this.element.querySelector("p").textContent = this.project.desc;
+    };
+    return ProjectItem;
 }(ProjectMain));
 var ProjectInput = (function (_super) {
     __extends(ProjectInput, _super);
